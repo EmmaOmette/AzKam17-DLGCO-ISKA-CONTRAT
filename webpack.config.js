@@ -21,6 +21,17 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('gestion_contractuelle_new', './assets/gestion_contractuelle/new.js')
+    .addEntry('gestion_contractuelle_home', './assets/gestion_contractuelle/home.js')
+    .addEntry('gestion_contractuelle_show', './assets/gestion_contractuelle/show.js')
+
+    //Gestion contractuelle - Manager
+    .addEntry('gestion_contractuelle_manager_home', './assets/gestion_contractuelle/manager/home.js')
+    .addEntry('gestion_contractuelle_manager_view', './assets/gestion_contractuelle/manager/view.js')
+
+    //Gestion contractuelle - Agent
+    .addEntry('gestion_contractuelle_agent_traitement', './assets/gestion_contractuelle/agent/traitement.js')
+    .addEntry('gestion_contractuelle_agent_afficher', './assets/gestion_contractuelle/agent/afficher.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -69,7 +80,7 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();

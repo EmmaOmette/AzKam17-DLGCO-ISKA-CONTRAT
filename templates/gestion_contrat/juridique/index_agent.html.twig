@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Menu Agent Juridique - Gestion Contractuelle{% endblock %}
+{% block title %}Menu Agent Juridique {{ ' | ' ~ lib }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset("plugins/datatables-bs4/css/dataTables.bootstrap4.min.css") }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/jszip/jszip.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}" defer></script>
+    {{ encore_entry_script_tags('gestion_contractuelle_manager_home') }}
+{% endblock %}
+
+{% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="row">
+                <div class="col">
+                    <div class="card card-{{ label }}">
+                        <div class="card-header">
+                            <h3 class="card-title">Message</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <!-- /.card-tools -->
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            {{ message | raw }}
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-4">
+            {% if is_granted('ROLE_USER_BOSS_JURIDIQUE') %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Menu - Manager Juridique
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <a href="{{ path('app_gestion_contrat_juridique_manager_listing', {statutDemande: 'demande_non_attribuee'}) }}" target="_top">
+                                    <button type="button" class="btn btn-primary btn-block">Attribuer les demandes aux agents</button>
+                                </a>
+                                <a href="{{ path('app_gestion_contrat_juridique_manager_listing', {statutDemande: 'demande_attribuee'}) }}" target="_top">
+                                    <button type="button" class="btn btn-primary btn-block mt-1">Voir les demandes en cours de traitement</button>
+                                </a>
+                                <a href="{{ path('app_gestion_contrat_juridique_manager_listing', {statutDemande: 'demande_traitees'}) }}" target="_top">
+                                    <button type="button" class="btn btn-primary btn-block mt-1">Consulter les demandes traitées</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Menu traitement - Agent juridique
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <a href="{{ path('app_gestion_contrat_juridique_home_agent') }}" target="_top">
+                                    <button type="button" class="btn btn-primary btn-block">
+                                        Consulter toutes
+                                        {{ is_granted('ROLE_USER_BOSS_JURIDIQUE') ? 'les' : 'mes' }}
+                                        demandes
+                                    </button>
+                                </a>
+                                <a href="{{ path('app_gestion_contrat_juridique_home_agent', {statut: "demande_attribuee"}) }}" target="_top">
+                                    <button type="button" class="btn btn-primary btn-block mt-1">
+                                        Consulter les demandes en attente de traitement
+                                    </button>
+                                </a>
+                                <a href="{{ path('app_gestion_contrat_juridique_home_agent', {statut: "demande_validee"}) }}" target="_top">
+                                    <button type="button" class="btn btn-primary btn-block mt-1">
+                                        Consulter
+                                        {{ is_granted('ROLE_USER_BOSS_JURIDIQUE') ? 'les' : 'mes' }}
+                                        demandes traitées
+                                    </button>
+                                </a>
+                                <a href="{{ path('app_gestion_contrat_juridique_home_agent', {statut: "demande_rejetee"}) }}" target="_top">
+                                    <button type="button" class="btn btn-primary btn-block mt-1">
+                                        Consulter
+                                        {{ is_granted('ROLE_USER_BOSS_JURIDIQUE') ? 'les' : 'mes' }}
+                                        demandes rejétées
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Demandes de contrat</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Agent Initiateur</th>
+                            <th>Type Contrat</th>
+                            <th>Objet</th>
+                            <th>Cocontractant</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in demandes %}
+                                <tr>
+                                    <td>{{ d.id }}</td>
+                                    <td>{{ d.agentInitiateur.firstName ~ ' ' ~ d.agentInitiateur.lastName }}</td>
+                                    <td>{{ d.typeDemande.lib }}</td>
+                                    <td>{{ d.objet | slice(0, 30) ~ '...' }}</td>
+                                    <td>{{ d.identiteConcontractantTemp }}</td>
+                                    <td>
+                                        <a href="{{ path(chemin, {id: d.id}) }}" target="_top">
+                                            <button type="button" class="btn btn-block btn-default btn-lg"  data-turbo-frame="_top">Consulter</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Agent Initiateur</th>
+                            <th>Type Contrat</th>
+                            <th>Objet</th>
+                            <th>Cocontractant</th>
+                            <th>Actions</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+{% endblock %}

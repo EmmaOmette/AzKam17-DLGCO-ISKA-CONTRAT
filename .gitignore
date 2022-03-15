@@ -15,3 +15,13 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+/migrations
+/translations
+/composer.lock
+/package-lock.json
+/graph.png
+/resetDB.sh
+/symfony.lock
+/yarn.lock
+/.env

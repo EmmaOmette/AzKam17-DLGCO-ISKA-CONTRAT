@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TypeDocContrat{% endblock %}
+
+{% block body %}
+    <h1>Edit TypeDocContrat</h1>
+
+    {{ include('gestion_base_documentaire/type_doc_contrat/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_gestion_base_documentaire_type_doc_contrat_index') }}">back to list</a>
+
+    {{ include('gestion_base_documentaire/type_doc_contrat/_delete_form.html.twig') }}
+{% endblock %}

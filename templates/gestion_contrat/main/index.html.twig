@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Accueil - Gestion Contractuelle{% endblock %}
+{% block title %}Accueil - Gestion Contractuelle{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset("plugins/datatables-bs4/css/dataTables.bootstrap4.min.css") }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/jszip/jszip.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}" defer></script>
+    {{ encore_entry_script_tags('gestion_contractuelle_home') }}
+{% endblock %}
+
+{% block body %}
+    {# Compte des statuts en base de données #}
+    <div class="row">
+        {% if is_granted('ROLE_JURIDIQUE') %}
+            <div class="col">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ nbrDemandeEnCoursDeValidation }}</h3>
+
+                        <h4>Demande en attente de validation</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ nbrDemandeTraites }}</h3>
+
+                        <h4>Demandes traitées</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="col-3">
+            <!-- small card -->
+            <a href="{{ path('app_gestion_contrat_main_new') }}">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        {% if is_granted('ROLE_JURIDIQUE') %}
+                            <h3>Enregistrer <br>un nouveau contrat.</h3>
+                        {% else %}
+                            <h3>Effectuer une</h3>
+                            <h3>demande de contrat.</h3>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {# Tableau avec les informations #}
+    <div class="row">
+        <div class="col">
+            {% for message in app.flashes('success') %}
+                <div class="callout callout-info">
+                    <h5>Résultat</h5>
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Liste de tout {{ is_granted('ROLE_JURIDIQUE') ? 'les' : 'mes' }} contrats.</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <hr>
+                    <table id="example1" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Identifiant</th>
+                            <th>Objet</th>
+                            {% if is_granted('ROLE_JURIDIQUE') %}
+                                <th>Créé par</th>
+                            {% endif %}
+                            <th>Statut</th>
+                            <th>Date</th>
+                            <th>Type de contrat</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for contrat in contrats %}
+                            <tr>
+                                <td>{{ contrat.id }}</td>
+                                <td>{{ contrat.objet }}</td>
+                                {% if is_granted('ROLE_JURIDIQUE') %}
+                                    <td>{{ contrat.agentInitiateur.firstName ~ ' ' ~ contrat.agentInitiateur.lastName }}</td>
+                                {% endif %}
+                                <td>{{ contrat.currentState | statutContrat }}</td>
+                                <td>{{ contrat.createdAt | date("d/m/Y") }}</td>
+                                <td>
+                                <span class="badge badge-{{ contrat.typeDemande.color }}">
+                                        {{ contrat.typeDemande.lib }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ path('app_gestion_contrat_main_edit', {id: contrat.id}) }}">
+                                            <button type="button" class="btn btn-default">Consulter</button>
+                                        </a>
+                                        {#{% if is_granted('ROLE_JURIDIQUE') %}
+                                            {% if contrat.statutContrat.slug == 'en_cours' %}
+                                                <a href="{{ path('gestion_contrat_changement_juridique', {slug: contrat.slug, state_slug: 'traite'}) }}">
+                                                    <button type="button" class="btn btn-success">Traité</button>
+                                                </a>
+                                                <a href="{{ path('gestion_contrat_changement_juridique', {slug: contrat.slug, state_slug: 'rejete'}) }}">
+                                                    <button type="button" class="btn btn-danger">Rejété</button>
+                                                </a>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if contrat.statutContrat.slug == 'en_cours' %}
+                                                <a href="{{ path('gestion_contrat_edit', {slug: contrat.slug}) }}">
+                                                    <button type="button" class="btn btn-info">Modifier</button>
+                                                </a>
+                                                <a href="{{ path('gestion_contrat_delete', {slug: contrat.slug}) }}">
+                                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}#}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Identifiant</th>
+                            <th>Objet</th>
+                            {% if is_granted('ROLE_JURIDIQUE') %}
+                                <th>Créé par</th>
+                            {% endif %}
+                            <th>Statut</th>
+                            <th>Date</th>
+                            <th>Type de contrat</th>
+                            <th>Actions</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </div>
+        <!-- /.col -->
+    </div>
+{% endblock %}

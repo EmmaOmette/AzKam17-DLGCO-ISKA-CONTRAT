@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeDocContrat index{% endblock %}
+
+{% block body %}
+    <h1>TypeDocContrat index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Path</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>OriginalName</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type_doc_contrat in type_doc_contrats %}
+            <tr>
+                <td>{{ type_doc_contrat.id }}</td>
+                <td>{{ type_doc_contrat.path }}</td>
+                <td>{{ type_doc_contrat.createdAt ? type_doc_contrat.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ type_doc_contrat.updatedAt ? type_doc_contrat.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ type_doc_contrat.originalName }}</td>
+                <td>
+                    <a href="{{ path('app_gestion_base_documentaire_type_doc_contrat_show', {'id': type_doc_contrat.id}) }}">show</a>
+                    <a href="{{ path('app_gestion_base_documentaire_type_doc_contrat_edit', {'id': type_doc_contrat.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_gestion_base_documentaire_type_doc_contrat_new') }}">Create new</a>
+{% endblock %}

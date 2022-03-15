@@ -1,0 +1,158 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+        <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">ISKA CONTRAT</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{ app.user.lastname ~ ' ' ~ app.user.firstname | upper }}</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Gestion Contractuelle
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_gestion_contrat_main_index') }}" data-turbo-frame="main_turbo" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Dashboard
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('app_gestion_contrat_main_new') }}" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    {{ is_granted('ROLE_JURIDIQUE') ? 'Nouveau contrat' : 'Nouvelle demande de contrat' }}
+                                </p>
+                            </a>
+                        </li>
+
+                        {% if is_granted("ROLE_JURIDIQUE") %}
+                            <li class="nav-item">
+                                <a href="{{ path('app_gestion_contrat_juridique') }}" class="nav-link" target="_top">
+                                    <i class="nav-icon far fa-calendar-alt"></i>
+                                    <p>
+                                        Traitement des demandes
+                                    </p>
+                                </a>
+                            </li>
+                        {% endif %}
+
+
+                        {% if is_granted("ROLE_USER_MANAGER") %}
+                            <li class="nav-item">
+                                <a href="{{ path('app_gestion_contrat_manager_index') }}" class="nav-link" target="_top">
+                                    <i class="nav-icon far fa-calendar-alt"></i>
+                                    <p>
+                                        Menu Manager
+                                    </p>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+
+                {% if is_granted("ROLE_JURIDIQUE") %}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Base documentaire
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_gestion_base_documentaire_type_doc_contrat_index') }}" target="_top" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Type de contrat
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+
+                {#<li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Gestion Contentieux
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Avis & Conseils
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Demande d'autorisation
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Obligation réglementaire
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Statistique & Business intelligence
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Paramètres
+                        </p>
+                    </a>
+                </li>#}
+                <li class="nav-item">
+                    <a href="{{ path('app_logout') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Déconnexion
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

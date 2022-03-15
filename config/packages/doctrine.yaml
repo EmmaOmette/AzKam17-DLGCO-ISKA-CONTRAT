@@ -16,6 +16,12 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
+            Contrat:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity/Contrat'
+                prefix: 'App\Entity\Contrat'
+                alias: Contrat
+
 when@test:
     doctrine:
         dbal:
