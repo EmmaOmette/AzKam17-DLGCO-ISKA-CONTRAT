@@ -21,3 +21,4 @@ yarn-error.log
 /graph.png
 /resetDB.sh
 /.env
+/yarn.lock
