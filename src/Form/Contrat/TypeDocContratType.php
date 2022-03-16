@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class TypeDocContratType extends AbstractType
 {
@@ -32,6 +33,17 @@ class TypeDocContratType extends AbstractType
                 // make it optional so you don't have to re-upload the PDF file
                 // every time you edit the Product details
                 'required' => false,
+                /*'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/msword',
+                            'application/x-pdf',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    ])
+                ],*/
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer',

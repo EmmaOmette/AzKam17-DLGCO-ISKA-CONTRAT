@@ -15,7 +15,10 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  * @DiscriminatorMap({
  *     "abs_document" = "Document",
  *     "doc_contrat" = "App\Entity\Contrat\DocumentContrat",
- *     "doc_type_contrat" = "App\Entity\Contrat\TypeDocContrat"
+ *     "doc_type_contrat" = "App\Entity\Contrat\TypeDocContrat",
+ *
+ *
+ *     "doc_obligation" = "App\Entity\Obligation\Document",
  * })
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
  */

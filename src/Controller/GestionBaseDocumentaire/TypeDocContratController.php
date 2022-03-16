@@ -46,7 +46,7 @@ class TypeDocContratController extends AbstractController
                 $orginalFileName = pathinfo($fichier->getClientOriginalName(), PATHINFO_FILENAME);
 
                 $safeFilename = $slugger->slug($orginalFileName);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$fichier->guessExtension();
+                $newFilename = md5($label).'-'.uniqid().'.'.$fichier->guessExtension();
 
                 try{
                     $fichier->move(

@@ -2,17 +2,15 @@
 
 namespace App\Entity\Obligation;
 
-use App\Repository\Obligation\StatutObligationRepository;
-use Cocur\Slugify\Slugify;
+use App\Repository\Obligation\SourceListeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass=StatutObligationRepository::class)
+ * @ORM\Entity(repositoryClass=SourceListeRepository::class)
  */
-class StatutObligation
+class SourceListe
 {
     /**
      * @ORM\Id
@@ -27,12 +25,12 @@ class StatutObligation
     private $lib;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean")
      */
-    private $slug;
+    private $dispoDeroulante;
 
     /**
-     * @ORM\OneToMany(targetEntity=Obligation::class, mappedBy="statut")
+     * @ORM\OneToMany(targetEntity=Obligation::class, mappedBy="sourceList")
      */
     private $obligations;
 
@@ -58,23 +56,18 @@ class StatutObligation
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getDispoDeroulante(): ?bool
     {
-        return $this->slug;
+        return $this->dispoDeroulante;
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @return $this
-     */
-    public function setSlug(): self
+    public function setDispoDeroulante(bool $dispoDeroulante): self
     {
-        $this->slug = (new Slugify())->slugify(
-            $this->getLib(), '_'
-        );
+        $this->dispoDeroulante = $dispoDeroulante;
 
         return $this;
     }
+
     /**
      * @return Collection<int, Obligation>
      */
@@ -87,7 +80,7 @@ class StatutObligation
     {
         if (!$this->obligations->contains($obligation)) {
             $this->obligations[] = $obligation;
-            $obligation->setStatut($this);
+            $obligation->setSourceList($this);
         }
 
         return $this;
@@ -97,8 +90,8 @@ class StatutObligation
     {
         if ($this->obligations->removeElement($obligation)) {
             // set the owning side to null (unless already changed)
-            if ($obligation->getStatut() === $this) {
-                $obligation->setStatut(null);
+            if ($obligation->getSourceList() === $this) {
+                $obligation->setSourceList(null);
             }
         }
 

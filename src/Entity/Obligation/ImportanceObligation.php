@@ -3,12 +3,15 @@
 namespace App\Entity\Obligation;
 
 use App\Repository\Obligation\ImportanceObligationRepository;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass=ImportanceObligationRepository::class)
  */
 class ImportanceObligation
@@ -31,11 +34,6 @@ class ImportanceObligation
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $color;
-
-    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
@@ -50,6 +48,11 @@ class ImportanceObligation
      * @ORM\OneToMany(targetEntity=Obligation::class, mappedBy="importanceObligation")
      */
     private $obligations;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $dispoDeroulante;
 
     public function __construct()
     {
@@ -91,18 +94,6 @@ class ImportanceObligation
         return $this;
     }
 
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    public function setColor(string $color): self
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -114,7 +105,7 @@ class ImportanceObligation
      */
     public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+            $this->createdAt = CarbonImmutable::now();
 
         return $this;
     }
@@ -131,7 +122,7 @@ class ImportanceObligation
      */
     public function setUpdatedAt(): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = Carbon::now();
 
         return $this;
     }
@@ -162,6 +153,18 @@ class ImportanceObligation
                 $obligation->setImportanceObligation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDispoDeroulante(): ?bool
+    {
+        return $this->dispoDeroulante;
+    }
+
+    public function setDispoDeroulante(bool $dispoDeroulante): self
+    {
+        $this->dispoDeroulante = $dispoDeroulante;
 
         return $this;
     }

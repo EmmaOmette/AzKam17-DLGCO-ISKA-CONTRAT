@@ -33,6 +33,12 @@ Encore
     .addEntry('gestion_contractuelle_agent_traitement', './assets/gestion_contractuelle/agent/traitement.js')
     .addEntry('gestion_contractuelle_agent_afficher', './assets/gestion_contractuelle/agent/afficher.js')
 
+
+    //Gestion litige
+    .addEntry('gestion_contractuelle_litige_new', './assets/gestion_litige/new.js')
+
+    //Gestion obligation
+    .addEntry('gestion_obligation_new', './assets/gestion_obligation/new.js')
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 

@@ -2,7 +2,10 @@
 
 namespace App\Entity\Obligation;
 
+use App\Entity\User;
 use App\Repository\Obligation\ObligationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,11 +41,6 @@ class Obligation
     private $obligation;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $sanctionsPrevuesImpact;
-
-    /**
      * @ORM\ManyToOne(targetEntity=StatutObligation::class, inversedBy="obligations")
      */
     private $statut;
@@ -51,6 +49,52 @@ class Obligation
      * @ORM\ManyToOne(targetEntity=ImportanceObligation::class, inversedBy="obligations")
      */
     private $importanceObligation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=SourceListe::class, inversedBy="obligations")
+     */
+    private $sourceList;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ReferenceListe::class, inversedBy="obligations")
+     */
+    private $referenceListe;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sanctions;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $prevues;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $impact;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Document::class, cascade={"persist", "remove"})
+     */
+    private $document;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Preuve::class, mappedBy="obligation")
+     */
+    private $preuves;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $reponsable;
+
+    public function __construct()
+    {
+        $this->preuves = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,18 +149,6 @@ class Obligation
         return $this;
     }
 
-    public function getSanctionsPrevuesImpact(): ?string
-    {
-        return $this->sanctionsPrevuesImpact;
-    }
-
-    public function setSanctionsPrevuesImpact(string $sanctionsPrevuesImpact): self
-    {
-        $this->sanctionsPrevuesImpact = $sanctionsPrevuesImpact;
-
-        return $this;
-    }
-
     public function getStatut(): ?StatutObligation
     {
         return $this->statut;
@@ -137,6 +169,120 @@ class Obligation
     public function setImportanceObligation(?ImportanceObligation $importanceObligation): self
     {
         $this->importanceObligation = $importanceObligation;
+
+        return $this;
+    }
+
+    public function getSourceList(): ?SourceListe
+    {
+        return $this->sourceList;
+    }
+
+    public function setSourceList(?SourceListe $sourceList): self
+    {
+        $this->sourceList = $sourceList;
+
+        return $this;
+    }
+
+    public function getReferenceListe(): ?ReferenceListe
+    {
+        return $this->referenceListe;
+    }
+
+    public function setReferenceListe(?ReferenceListe $referenceListe): self
+    {
+        $this->referenceListe = $referenceListe;
+
+        return $this;
+    }
+
+    public function getSanctions(): ?string
+    {
+        return $this->sanctions;
+    }
+
+    public function setSanctions(string $sanctions): self
+    {
+        $this->sanctions = $sanctions;
+
+        return $this;
+    }
+
+    public function getPrevues(): ?string
+    {
+        return $this->prevues;
+    }
+
+    public function setPrevues(string $prevues): self
+    {
+        $this->prevues = $prevues;
+
+        return $this;
+    }
+
+    public function getImpact(): ?string
+    {
+        return $this->impact;
+    }
+
+    public function setImpact(string $impact): self
+    {
+        $this->impact = $impact;
+
+        return $this;
+    }
+
+    public function getDocument(): ?Document
+    {
+        return $this->document;
+    }
+
+    public function setDocument(?Document $document): self
+    {
+        $this->document = $document;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Preuve>
+     */
+    public function getPreuves(): Collection
+    {
+        return $this->preuves;
+    }
+
+    public function addPreufe(Preuve $preufe): self
+    {
+        if (!$this->preuves->contains($preufe)) {
+            $this->preuves[] = $preufe;
+            $preufe->setObligation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePreufe(Preuve $preufe): self
+    {
+        if ($this->preuves->removeElement($preufe)) {
+            // set the owning side to null (unless already changed)
+            if ($preufe->getObligation() === $this) {
+                $preufe->setObligation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getReponsable(): ?User
+    {
+        return $this->reponsable;
+    }
+
+    public function setReponsable(?User $reponsable): self
+    {
+        $this->reponsable = $reponsable;
 
         return $this;
     }

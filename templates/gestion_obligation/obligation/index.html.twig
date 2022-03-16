@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Accueil - Gestion Obligations{% endblock %}
+{% block title %}Accueil - Gestion Obligations{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset("plugins/datatables-bs4/css/dataTables.bootstrap4.min.css") }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/jszip/jszip.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}" defer></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}" defer></script>
+    {{ encore_entry_script_tags('gestion_contractuelle_home') }}
+{% endblock %}
+
+{% block body %}
+    {# Compte des statuts en base de données #}
+    <div class="row">
+        <div class="col">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ nombreTotal }}</h3>
+
+                    <h4>Nombre total d'obligations</h4>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <!-- small card -->
+            <a href="{{ path('app_gestion_obligation_obligation_new') }}" target="_top">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        Enregistrer une nouvelle obligation
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {# Tableau avec les informations #}
+    <div class="row">
+        <div class="col">
+            {% for message in app.flashes('success') %}
+                <div class="callout callout-info">
+                    <h5>Résultat</h5>
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Liste de tout les obligations.</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <hr>
+                    <table id="example1" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Identifiant</th>
+                            <th>Statut</th>
+                            <th>Sources dispositions</th>
+                            <th>Références</th>
+                            <th>Points abordés</th>
+                            <th>Obligation</th>
+                            <th>Sanctions</th>
+                            <th>Prévues</th>
+                            <th>Impact</th>
+                            <th>Responsable</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for o in obligations %}
+                            <tr>
+                                <td>{{ o.id }}</td>
+                                <td>{{ o.statut.lib }}</td>
+                                <td>{{ o.sourceDisposition | raw }}</td>
+                                <td>{{ o.reference | raw }}</td>
+                                <td>{{ o.pointsAbordes | raw }}</td>
+                                <td>{{ o.obligation | raw }}</td>
+                                <td>{{ o.sanctions | raw}}</td>
+                                <td>{{ o.prevues | raw}}</td>
+                                <td>{{ o.reponsable.lastName ~ ' ' ~ o.reponsable.firstName}}</td>
+                                <td>
+                                    <a href="{{ path('app_gestion_obligation_obligation_show', {'id': o.id}) }}" target="_top">
+                                        <button class="btn btn-info">Consulter</button>
+                                    </a>
+                                    <a href="{{ path('app_gestion_obligation_obligation_edit', {'id': o.id}) }}" target="_top">
+                                        <button class="btn btn-info">Modifier</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Identifiant</th>
+                            <th>Statut</th>
+                            <th>Sources dispositions</th>
+                            <th>Références</th>
+                            <th>Points abordés</th>
+                            <th>Obligation</th>
+                            <th>Sanctions</th>
+                            <th>Prévues</th>
+                            <th>Impact</th>
+                            <th>Responsable</th>
+                            <th>Action</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </div>
+        <!-- /.col -->
+    </div>
+{% endblock %}
