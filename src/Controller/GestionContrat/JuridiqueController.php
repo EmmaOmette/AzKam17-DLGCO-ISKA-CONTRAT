@@ -194,7 +194,7 @@ class JuridiqueController extends AbstractController
             $res = $traiterDemandeContratService->call($contratReq, $form->get('resultTraitement')->getData()) ?? false;
             $this->addFlash(
                 $res ? "success" : "danger",
-                $res ? "L'action a été correctement réalisée. La demande de contrat a été {$form->get('resultTraitement')->getData()}" : "Erreur !"
+                $res ? "L'action a été correctement réalisée. La demande de contrat a été {strtolower( $form->get('resultTraitement')->getData() ).'e'}" : "Erreur !"
             );
             return $this->redirectToRoute("app_gestion_contrat_juridique_home_agent");
         }

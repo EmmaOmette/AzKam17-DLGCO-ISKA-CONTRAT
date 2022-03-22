@@ -56,9 +56,22 @@ class ManagerController extends AbstractController
      */
     public function index($etat = ''){
         $demandes = $this->listingDemandesService->call($etat);
-        dump($demandes);
-        $demandes = array_merge($demandes, $etat == 'demande_acceptee_manager' ? $this->listingDemandesService->call('demande_non_attribuee') : []);
-        dump($demandes);
+
+        $additionnalCases = [];
+
+        switch ($etat){
+            case "demande_acceptee_manager":
+                $additionnalCases = array_merge(
+                    $this->listingDemandesService->call("demande_non_attribuee"),
+                    $this->listingDemandesService->call("demande_non_attribuee"),
+                    $this->listingDemandesService->call("demande_non_attribuee")
+                );
+                break;
+        }
+
+        $demandes = array_merge(
+            $demandes,
+            $etat == 'demande_acceptee_manager' ? $this->listingDemandesService->call('demande_non_attribuee') : []);
         $nombreTotalDemandeEnAttente = 0;
         $nombreTotalDemandesContratDepartement = 0;
 
