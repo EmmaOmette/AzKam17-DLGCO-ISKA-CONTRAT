@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Entity;
 
 
 /**
+ * @ORM\Table (name="t_statut")
  * @Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")

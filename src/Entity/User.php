@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @ORM\Table (name="t_user")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_obligation_preuve")
  * @ORM\Entity(repositoryClass=PreuveRepository::class)
  */
 class Preuve

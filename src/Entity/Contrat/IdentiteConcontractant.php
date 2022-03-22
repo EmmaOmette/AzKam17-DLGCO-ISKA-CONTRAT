@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_contrat_identite_cocontractant")
  * @ORM\Entity(repositoryClass=IdentiteConcontractantRepository::class)
  */
 class IdentiteConcontractant extends Statut

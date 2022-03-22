@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 /**
+ * @ORM\Table (name="t_contentieux_procedure")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass=ProcedureRepository::class)
- * @ORM\Table(name="`procedure`")
  */
 class Procedure
 {

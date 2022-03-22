@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_obligation_statut")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass=StatutObligationRepository::class)
  */

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
 
 /**
+ * @ORM\Table (name="t_document")
  * @ORM\HasLifecycleCallbacks
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")

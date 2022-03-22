@@ -6,6 +6,7 @@ use App\Repository\Obligation\ResponsableRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_obligation_responsable")
  * @ORM\Entity(repositoryClass=ResponsableRepository::class)
  */
 class Responsable

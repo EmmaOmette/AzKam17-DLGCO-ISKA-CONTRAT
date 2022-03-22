@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_obligation_source_liste")
  * @ORM\Entity(repositoryClass=SourceListeRepository::class)
  */
 class SourceListe

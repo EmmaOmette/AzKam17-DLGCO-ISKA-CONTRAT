@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_obligation_importance")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass=ImportanceObligationRepository::class)
  */

@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 /**
+ * @ORM\Table (name="t_contrat")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass=ContratRepository::class)
  */
@@ -159,9 +160,15 @@ class Contrat
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=NotificationsContrat::class, mappedBy="contrat")
+     */
+    private $notifications;
+
     public function __construct()
     {
         $this->documentContrats = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -504,6 +511,36 @@ class Contrat
     public function setUpdatedAt(): self
     {
         $this->updatedAt = Carbon::now();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NotificationsContrat>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(NotificationsContrat $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setContrat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(NotificationsContrat $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getContrat() === $this) {
+                $notification->setContrat(null);
+            }
+        }
 
         return $this;
     }

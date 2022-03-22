@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_user_juridique")
  * @ORM\Entity(repositoryClass=UserJuridiqueRepository::class)
  */
 class UserJuridique

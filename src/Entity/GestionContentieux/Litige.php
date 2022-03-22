@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 /**
+ * @ORM\Table (name="t_contentieux_litige")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass=LitigeRepository::class)
  */

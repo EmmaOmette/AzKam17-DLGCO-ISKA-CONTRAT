@@ -6,6 +6,7 @@ use App\Repository\Obligation\PlanActionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_obligation_plan_action")
  * @ORM\Entity(repositoryClass=PlanActionRepository::class)
  */
 class PlanAction

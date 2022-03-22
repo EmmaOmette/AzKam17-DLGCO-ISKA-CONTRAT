@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table (name="t_contrat_mode_reglement")
  * @ORM\Entity(repositoryClass=ModeReglementRepository::class)
  */
 class ModeReglement extends Statut
