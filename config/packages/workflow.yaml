@@ -46,3 +46,30 @@ framework:
                 valider_demande_user_juridique:
                     from: en_attente_manager
                     to: demande_validee
+
+
+
+        demande_avis:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'currentState'
+            supports:
+                - App\Entity\AvisConseils\Avis
+            initial_marking: waiting_for_attribution
+            places:
+                - waiting_for_attribution
+                - waiting_for_treatment
+                - treated
+            transitions:
+                give_to_agent_juridique:
+                    from: waiting_for_attribution
+                    to: waiting_for_treatment
+                answer_by_agent_juridique:
+                    from: waiting_for_treatment
+                    to: treated
+                temp_transition:
+                    from: waiting_for_attribution
+                    to: treated

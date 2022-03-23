@@ -62,7 +62,9 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-lg btn-info">{{ button_label|default('Effectuer la demande') }}</button>
+                <button class="btn btn-lg btn-info"
+                        {{ is_granted('ROLE_JURIDIQUE') and (avis.currentState == "waiting_for_attribution") ? 'style="display: none;" : '' }}
+                >{{ button_label|default('Effectuer la demande') }}</button>
                 {{ form_end(form) }}
                 </div>
             </div>

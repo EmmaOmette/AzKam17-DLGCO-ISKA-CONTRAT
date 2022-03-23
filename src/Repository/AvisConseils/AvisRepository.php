@@ -3,6 +3,7 @@
 namespace App\Repository\AvisConseils;
 
 use App\Entity\AvisConseils\Avis;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -73,4 +74,25 @@ class AvisRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function pending()
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.currentState = :val')
+            ->setParameter('val', 'waiting_for_attribution')
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function myRequests(User $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.userFrom = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

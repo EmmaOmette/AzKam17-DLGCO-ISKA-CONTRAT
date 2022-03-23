@@ -12,8 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\File;
 
-class AvisType extends AbstractType
+class AvisViewType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -28,6 +29,7 @@ class AvisType extends AbstractType
                 'label' => 'Renseignement',
                 'empty_data' => '',
                 'required' => false,
+                'disabled' => false,
                 'attr' => [
                     'id' => 'summernote',
                     'class' => 'form-control',
@@ -37,29 +39,23 @@ class AvisType extends AbstractType
             ])
             ->add('niveauExecution', TextType::class, [
                 'label' => 'Niveau d\'exécution',
+                'required' => false,
+                'disabled' => false,
                 'empty_data' => '',
                 'attr' => [
                     'class' => 'form-control',
                 ]
             ])
-            ->add('documents', FileType::class, [
-                'label' => 'Joindre des fichiers à la demande',
-                'data_class'=>null,
-
-                // unmapped means that this field is not associated to any entity property
-                'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
+            ->add('response', TextareaType::class, [
+                'label' => 'Réponse',
+                'empty_data' => '',
                 'required' => false,
-                'multiple' => true,
-                'constraints' => [
-                    new All(
-                        new File([
-                            'maxSize' => '200M'
-                        ])
-                    )
-                ],
+                'attr' => [
+                    'id' => 'summernote',
+                    'class' => 'form-control',
+                    'rows' => 10,
+                    'style' => "resize: none;"
+                ]
             ])
         ;
     }

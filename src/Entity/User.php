@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\AvisConseils\Avis;
 use App\Entity\Contrat\Contrat;
 use App\Repository\UserRepository;
 use Carbon\Carbon;
@@ -80,6 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->contratsInities = new ArrayCollection();
+        $this->avis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -286,4 +288,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->getFirstName().' '.$this->getLastName();
     }
+
 }

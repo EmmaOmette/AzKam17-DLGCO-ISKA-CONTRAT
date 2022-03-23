@@ -83,11 +83,10 @@
             <tr>
                 <td>{{ avi.id }}</td>
                 <td>{{ avi.objet }}</td>
-                <td>{{ avi.rensignement }}</td>
+                <td>{{ avi.rensignement | striptags| u.truncate(25, true, '...')|raw|nl2br }}</td>
                 <td>{{ avi.niveauExecution }}</td>
                 <td>
-                    <a href="{{ path('app_gestion_avis_conseils_avis_show', {'id': avi.id}) }}">show</a>
-                    <a href="{{ path('app_gestion_avis_conseils_avis_edit', {'id': avi.id}) }}">edit</a>
+                    <a target="_top" href="{{ path('app_gestion_avis_conseils_avis_show', {'id': avi.id}) }}">Consulter</a>
                 </td>
             </tr>
         {% else %}

@@ -64,7 +64,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
                 $user->setPassword(
                     $this->hasher->hashPassword(
-                        $user, '0123456789'
+                        $user, 'azerty'
                     )
                 );
 
