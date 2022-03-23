@@ -39,6 +39,11 @@ Encore
 
     //Gestion obligation
     .addEntry('gestion_obligation_new', './assets/gestion_obligation/new.js')
+
+    //Gestion avis
+    .addEntry('gestion_contractuelle_avis_new', './assets/gestion_avis/new.js')
+
+
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 

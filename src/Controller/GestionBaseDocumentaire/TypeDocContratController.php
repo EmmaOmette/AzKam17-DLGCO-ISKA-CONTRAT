@@ -17,7 +17,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @IsGranted("ROLE_JURIDIQUE")
- * @Route("/base-documentaire/type-document-contrat")
+ * @Route("/app/base-documentaire/type-document-contrat")
  */
 class TypeDocContratController extends AbstractController
 {

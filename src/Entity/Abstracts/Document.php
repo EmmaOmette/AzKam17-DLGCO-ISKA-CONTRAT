@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  *
  *
  *     "doc_obligation" = "App\Entity\Obligation\Document",
+ *     "doc_avis_conseils" = "App\Entity\AvisConseils\DocAvisConseils"
  * })
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
  */
