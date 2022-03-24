@@ -63,13 +63,12 @@
                     </div>
                 </div>
                 <button class="btn btn-lg btn-info"
-                        {{ is_granted('ROLE_JURIDIQUE') and (avis.currentState == "waiting_for_attribution") ? 'style="display: none;" : '' }}
+                        {{ is_granted('ROLE_JURIDIQUE') and (avis.currentState == "waiting_for_attribution") ? 'style="display: none;"' : '' }}
                 >{{ button_label|default('Effectuer la demande') }}</button>
                 {{ form_end(form) }}
                 </div>
             </div>
         </div>
-    </div>
 
     <a href="{{ path('app_gestion_avis_conseils_avis_index') }}">back to list</a>
 {% endblock %}
