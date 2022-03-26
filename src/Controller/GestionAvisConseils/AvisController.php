@@ -74,6 +74,12 @@ class AvisController extends AbstractController
 
             $avisRepository->add($avis);
             $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "La demande d'avis a été correctement enregistrée."
+            );
+
             return $this->redirectToRoute('app_gestion_avis_conseils_avis_index', [], Response::HTTP_SEE_OTHER);
         }
 

@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Consultation de la demande d'autorisation - {{ demande.id }}{% endblock %}
+{% block title %}
+    Consultation de la demande N°{{ demande.id }}
+{% endblock %}
+
+{% block meta_tags %}
+    <meta name="turbo-cache-control" content="no-cache">
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <meta name="turbo-visit-control" content="reload">
+    <link rel="stylesheet" href="{{ asset("plugins/datatables-bs4/css/dataTables.bootstrap4.min.css") }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <style>
+        .desactive{
+            background-color: #e9ecef;
+            pointer-events:none;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <div class="card-title">
+                        {% if is_granted('ROLE_JURIDIQUE') %}
+                            {% if demande.currentState == "waiting_for_attribution" %}
+                                Traiter la demande d'autorisation
+                            {% else %}
+                                Consulter la demande d'autorisation
+                            {% endif %}
+
+                        {% else %}
+                            Consulter la demande d'autorisation
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4 class="mt-3">Demande d'autorisation</h4>
+                    <hr>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="">{{ form_label(form.objet) }}</label>
+                                {{ form_widget(form.objet) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="">Complément d'informations</label>
+                                {{ form_widget(form.corps) }}
+                            </div>
+                        </div>
+                    </div>
+                    {% if demande.currentState == "waiting_for_attribution" %}
+                        {% if is_granted('ROLE_JURIDIQUE') %}
+                            <div class="row mt-2" {{ is_granted('ROLE_JURIDIQUE') ? "" : "style='display: none;'" }}>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="">Réponse</label>
+                                        {{ form_widget(form.response) }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="row mt-2" {{ is_granted('ROLE_JURIDIQUE') ? "" : "style='display: none;'" }}>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="">Réponse</label>
+                                    {{ form_widget(form.response) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="row mt-1">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Fichiers joints</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body p-0">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Nom du document</th>
+                                            <th>Ajouté le</th>
+                                            <th>Télécharger</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for doc in demande.documents  %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ doc.originalName }}</td>
+                                                <td>{{ doc.createdAt | date('d-m-Y') }}</td>
+                                                <td>
+                                                    <a href="{{ contrat_doc_directory ~ doc.path }}" target="_blank" download>
+                                                        <button type="button" class="btn btn-block btn-primary" download="{{ doc.originalName }}">Télécharger</button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-lg btn-info" {{ is_granted('ROLE_JURIDIQUE') ? "" : "style='display: none;'" }}>{{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

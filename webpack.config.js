@@ -43,6 +43,9 @@ Encore
     //Gestion avis
     .addEntry('gestion_contractuelle_avis_new', './assets/gestion_avis/new.js')
 
+    //Gestion autorisation - demande
+    .addEntry('gestion_autorisation_demande_new', './assets/gestion_autorisation/demande_new.js')
+
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

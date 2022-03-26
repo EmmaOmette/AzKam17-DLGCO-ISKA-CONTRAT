@@ -34,9 +34,9 @@
         <div class="col">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>{{ nbrAvis }}</h3>
+                    <h3>{{ nbrDemandes }}</h3>
 
-                    <h4>Nombre total d'avis</h4>
+                    <h4>Nombre total de demandes</h4>
                 </div>
                 <div class="icon">
                     <i class="ion ion-bag"></i>
@@ -45,10 +45,10 @@
         </div>
         <div class="col-3">
             <!-- small card -->
-            <a href="{{ path('app_gestion_avis_conseils_avis_new') }}" target="_top">
+            <a href="{{ path('app_gestion_autorisation_demande_new') }}" target="_top">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        Demander un avis / conseil
+                        Effectuer une demande d'autorisation
                     </div>
                 </div>
             </a>
@@ -66,34 +66,35 @@
         </div>
     </div>
 
+
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Objet</th>
-                <th>Rensignement</th>
-                <th>Niveau d'exécution</th>
+                <th>Corps</th>
+                <th>Créé le</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for avi in avis %}
+        {% for demande in demandes %}
             <tr>
-                <td>{{ avi.id }}</td>
-                <td>{{ avi.objet }}</td>
-                <td>{{ avi.rensignement | striptags| u.truncate(25, true, '...')|raw|nl2br }}</td>
-                <td>{{ avi.niveauExecution }}</td>
+                <td>{{ demande.id }}</td>
+                <td>{{ demande.objet }}</td>
+                <td>{{ demande.corps | striptags| u.truncate(25, true, '...')|raw|nl2br }}</td>
+                <td>{{ demande.createdAt ? demande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a target="_top" href="{{ path('app_gestion_avis_conseils_avis_show', {'id': avi.id}) }}">Consulter</a>
+                    <a href="{{ path('app_gestion_autorisation_demande_show', {'id': demande.id}) }}" target="_top">Consulter</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_gestion_avis_conseils_avis_new') }}">Create new</a>
+    <a href="{{ path('app_gestion_autorisation_demande_new') }}">Create new</a>
 {% endblock %}
