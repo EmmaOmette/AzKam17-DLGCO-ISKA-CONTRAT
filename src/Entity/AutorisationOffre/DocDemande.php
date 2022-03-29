@@ -20,7 +20,7 @@ class DocDemande extends Document
 
     /**
      * @ORM\ManyToOne(targetEntity=Demande::class, inversedBy="documents")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $demande;
 

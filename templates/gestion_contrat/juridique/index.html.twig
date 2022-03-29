@@ -67,13 +67,13 @@
                         <div class="card-body">
                             <div class="col-md-12">
                                 <a href="{{ path('app_gestion_contrat_juridique_manager_listing', {statutDemande: 'demande_non_attribuee'}) }}" target="_top">
-                                    <button type="button" class="btn btn-primary btn-block">Attribuer les demandes aux agents</button>
+                                    <button type="button" class="btn btn-primary btn-block">Attribution</button>
                                 </a>
                                 <a href="{{ path('app_gestion_contrat_juridique_manager_listing', {statutDemande: 'demande_attribuee'}) }}" target="_top">
-                                    <button type="button" class="btn btn-primary btn-block mt-1">Voir les demandes en cours de traitement</button>
+                                    <button type="button" class="btn btn-primary btn-block mt-1">Demandes en cours</button>
                                 </a>
                                 <a href="{{ path('app_gestion_contrat_juridique_manager_listing', {statutDemande: 'demande_traitees'}) }}" target="_top">
-                                    <button type="button" class="btn btn-primary btn-block mt-1">Consulter les demandes traitées</button>
+                                    <button type="button" class="btn btn-primary btn-block mt-1">Demandes traitées</button>
                                 </a>
                             </div>
                         </div>
@@ -93,28 +93,24 @@
                             <div class="col-md-12">
                                 <a href="#" target="_top">
                                     <button type="button" class="btn btn-primary btn-block">
-                                        Consulter toutes
+                                        Toutes
                                         {{ is_granted('ROLE_USER_BOSS_JURIDIQUE') ? 'les' : 'mes' }}
                                         demandes
                                     </button>
                                 </a>
                                 <a href="#" target="_top">
                                     <button type="button" class="btn btn-primary btn-block mt-1">
-                                        Consulter les demandes en attente de traitement
+                                        Demandes en attente
                                     </button>
                                 </a>
                                 <a href="#" target="_top">
                                     <button type="button" class="btn btn-primary btn-block mt-1">
-                                        Consulter
-                                        {{ is_granted('ROLE_USER_BOSS_JURIDIQUE') ? 'les' : 'mes' }}
-                                        demandes traitées
+                                        Demandes traitées
                                     </button>
                                 </a>
                                 <a href="#" target="_top">
                                     <button type="button" class="btn btn-primary btn-block mt-1">
-                                        Consulter
-                                        {{ is_granted('ROLE_USER_BOSS_JURIDIQUE') ? 'les' : 'mes' }}
-                                        demandes rejétées
+                                        Demandes rejétées
                                     </button>
                                 </a>
                             </div>
