@@ -239,4 +239,16 @@ class JuridiqueController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/valide", name="app_gestion_contrat_valide",methods={"GET"})
+     */
+    public function demandeValidee(ContratRepository $contratRepository){
+        return $this->render(
+            'gestion_contrat/main/valider.html.twig', [
+                'contrats' => $contratRepository->findBy([
+                    'currentState' => 'demande_validee'
+                ])
+            ]
+        );
+    }
 }

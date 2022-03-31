@@ -74,7 +74,7 @@
 
                 {% if is_granted("ROLE_JURIDIQUE") %}
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ path('app_gestion_contrat_valide') }}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
                                 Contrat
