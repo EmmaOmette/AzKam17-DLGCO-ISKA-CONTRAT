@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\Contrat\ContratType;
 use App\Form\Contrat\Create\ContratNewType;
 use App\Repository\Contrat\ContratRepository;
+use App\Repository\UserJuridiqueRepository;
 use App\Service\Contrat\SaveNewContrat;
 use Carbon\Carbon;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,15 +33,19 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="app_gestion_contrat_main_index", methods={"GET"})
      */
-    public function index(ContratRepository $contratRepository): Response
+    public function index(ContratRepository $contratRepository, UserJuridiqueRepository $userJuridiqueRepository): Response
     {
         /** @var User $user**/
         $user = $this->getUser();
 
+        $userJuridique = $userJuridiqueRepository->findOneBy([
+            'user' => $user
+        ]);
+
 
         return $this->render('gestion_contrat/main/index.html.twig', [
-            'nbrDemandeEnCoursDeValidation' => $this->isGranted("ROLE_JURIDIQUE") ? $contratRepository->nbrEnAttenteValidation($user) : 0,
-            'nbrDemandeTraites' => $this->isGranted("ROLE_JURIDIQUE") ? ($contratRepository->nbrDemandesTraites($user) ?? 0) : 0,
+            'nbrDemandeEnCoursDeValidation' => $this->isGranted("ROLE_JURIDIQUE") ? $contratRepository->nbrEnAttenteValidation($userJuridique) : 0,
+            'nbrDemandeTraites' => $this->isGranted("ROLE_JURIDIQUE") ? ($contratRepository->nbrDemandesTraites($userJuridique) ?? 0) : 0,
             'contrats' => $this->isGranted("ROLE_JURIDIQUE") ? $contratRepository->findAll() : $contratRepository->findMyContrats($user),
         ]);
     }
@@ -81,7 +86,7 @@ class MainController extends AbstractController
         /* @var User $user */
         $user = $this->getUser();
 
-        if($contrat->getAgentInitiateur() != $user){
+        if($contrat->getAgentInitiateur() !== $user && !$this->isGranted('ROLE_JURIDIQUE')){
             $this->addFlash(
                 'danger',
                 'Accès non autorisé !'

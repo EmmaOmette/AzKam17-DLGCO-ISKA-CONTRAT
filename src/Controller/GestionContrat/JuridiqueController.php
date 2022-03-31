@@ -11,6 +11,7 @@ use App\Form\Contrat\Juridique\Manager\AttributionType;
 use App\Form\Contrat\Juridique\Manager\ConsultationAttribueeType;
 use App\Form\Contrat\Manager\ContratManagerViewType;
 use App\Repository\Contrat\ContratRepository;
+use App\Repository\UserJuridiqueRepository;
 use App\Service\Contrat\Juridique\Agent\TraiterDemandeContrat;
 use App\Service\Contrat\Juridique\GetMesDemandes;
 use App\Service\Contrat\Juridique\Manager\AttribuerDemandeAgent;
@@ -169,7 +170,7 @@ class JuridiqueController extends AbstractController
     /**
      * @Route("/agent-juridique/traitement/{id}", name="app_gestion_contrat_juridique_traitement_agent", methods={"GET", "POST"})
      */
-    public function traitementDemandes(Request $request, Contrat $contrat, TraiterDemandeContrat $traiterDemandeContratService){
+    public function traitementDemandes(Request $request, Contrat $contrat, TraiterDemandeContrat $traiterDemandeContratService, UserJuridiqueRepository $userJuridiqueRepository, EntityManagerInterface $manager){
         //Si l'utilisateur n'est pas celui affecté à la demande retour en arrière
         /* @var User $user */
         $user = $this->getUser();
@@ -190,12 +191,24 @@ class JuridiqueController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Contrat $contratReq **/
             $contratReq = $form->getData();
-
+            $resultatTraitement = $form->get('resultTraitement')->getData().'e';
             $res = $traiterDemandeContratService->call($contratReq, $form->get('resultTraitement')->getData()) ?? false;
             $this->addFlash(
                 $res ? "success" : "danger",
-                $res ? "L'action a été correctement réalisée. La demande de contrat a été {strtolower( $form->get('resultTraitement')->getData() ).'e'}" : "Erreur !"
+                $res ? "L'action a été correctement réalisée. La demande de contrat a été " . strtolower( $resultatTraitement ) : "Erreur !"
             );
+
+            $userJuridique = $userJuridiqueRepository->findOneBy([
+                'user' => $user
+            ]);
+
+            $resultatTraitement == 'Approuvé' ?
+                $userJuridique->setNbrDemandesValidees( $userJuridique->getNbrDemandesValidees() + 1 ) :
+                $userJuridique->setNbrDemandesRefusees( $userJuridique->getNbrDemandesRefusees() + 1 );
+
+            $manager->persist($userJuridique);
+            $manager->flush();
+
             return $this->redirectToRoute("app_gestion_contrat_juridique_home_agent");
         }
 

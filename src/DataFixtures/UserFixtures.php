@@ -56,7 +56,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                     $roles[] = 'ROLE_JURIDIQUE';
                     $userJuridique = (new UserJuridique())
                         ->setUser($user)
-                        ->setTempsTraitement(mt_rand(2, 15));
+                        ->setTempsTraitement(mt_rand(2, 15))
+                        ->setNbrDemandesRefusees(0)
+                        ->setNbrDemandesValidees(0)
+                    ;
                     $manager->persist($userJuridique);
                 }
 

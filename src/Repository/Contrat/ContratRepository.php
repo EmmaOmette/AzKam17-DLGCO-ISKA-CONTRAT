@@ -5,6 +5,7 @@ namespace App\Repository\Contrat;
 use App\Entity\Contrat\Contrat;
 use App\Entity\Departement;
 use App\Entity\User;
+use App\Entity\UserJuridique;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -159,24 +160,30 @@ class ContratRepository extends ServiceEntityRepository
             ;
     }
 
-    public function nbrDemandesTraites(User $user)
+    public function nbrDemandesTraites(UserJuridique $user)
     {
         return $this->createQueryBuilder('c')
             ->select('SUM(u.nbrDemandesValidees + u.nbrDemandesRefusees)')
             ->join('c.userJuridique', 'u')
             ->where('c.userJuridique = :user')
+            ->orWhere('c.currentState = :demande_validee')
+            ->orWhere("c.currentState = :demande_validee")
             ->setParameter('user', $user)
+            ->setParameter('demande_validee', "demande_validee")
+            ->setParameter('demande_validee', "demande_validee")
             ->getQuery()
             ->getSingleScalarResult()
             ;
     }
 
-    public function nbrEnAttenteValidation(User $user)
+    public function nbrEnAttenteValidation(UserJuridique $user)
     {
         return $this->createQueryBuilder('c')
             ->select('COUNT(c.id)')
             ->where('c.userJuridique = :user')
+            ->andWhere('c.currentState = :currStat')
             ->setParameter('user', $user)
+            ->setParameter('currStat', 'demande_attribuee')
             ->getQuery()
             ->getSingleScalarResult()
             ;
