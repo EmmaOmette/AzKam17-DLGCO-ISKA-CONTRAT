@@ -49,6 +49,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 if($i == 4){
                     if($departement->getSlug() === 'direction_juridique'){
                         $roles[] = 'ROLE_USER_BOSS_JURIDIQUE';
+                        $userJuridique = (new UserJuridique())
+                            ->setUser($user)
+                            ->setTempsTraitement(mt_rand(2, 15))
+                            ->setNbrDemandesRefusees(0)
+                            ->setNbrDemandesValidees(0)
+                        ;
+                        $manager->persist($userJuridique);
                     }else{
                         $roles[] = 'ROLE_USER_MANAGER';
                     }
