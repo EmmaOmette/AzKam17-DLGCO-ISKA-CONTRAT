@@ -58,6 +58,7 @@
                             {% endif %}
                             <th>Statut</th>
                             <th>Date</th>
+                            <th>Délai de dénociation</th>
                             <th>Type de contrat</th>
                             <th>Actions</th>
                         </tr>
@@ -72,6 +73,7 @@
                                 {% endif %}
                                 <td>{{ contrat.currentState | statutContrat }}</td>
                                 <td>{{ contrat.createdAt | date("d/m/Y") }}</td>
+                                <td>{{ contrat.delaiDenonciation ~ ' restant(s)' }}</td>
                                 <td>
                                 <span class="badge badge-{{ contrat.typeDemande.color }}">
                                         {{ contrat.typeDemande.lib }}
@@ -115,6 +117,7 @@
                             {% endif %}
                             <th>Statut</th>
                             <th>Date</th>
+                            <th>Délai de dénociation</th>
                             <th>Type de contrat</th>
                             <th>Actions</th>
                         </tr>

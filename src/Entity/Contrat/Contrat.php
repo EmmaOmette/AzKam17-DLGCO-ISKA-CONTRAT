@@ -170,7 +170,7 @@ class Contrat
         $this->notifications = new ArrayCollection();
     }
 
-    public function getId(): ?Uuid
+    public function getId(): ?int
     {
         return $this->id;
     }
